@@ -16,7 +16,7 @@ namespace LicenceCalculator.Repository
             _filePath = filePath;
         }
         public IEnumerable<UserInstallationRequirement> GetByApplicationId(int applicationId) =>
-            GetUserInstallationRequirements(applicationId);
+            GetUserInstallationRequirements(applicationId, true);
 
         private ComputerType ParseComputerType(string computerType)
         {
@@ -28,10 +28,11 @@ namespace LicenceCalculator.Repository
             return ComputerType.None;
         }
 
-        private IEnumerable<UserInstallationRequirement> GetUserInstallationRequirements(int applicationId)
+        private IEnumerable<UserInstallationRequirement> GetUserInstallationRequirements(int applicationId, bool filterAhead)
         {
             if (_userInstallationRequirements == null)
-                _userInstallationRequirements = MapToDomain(LicenceInfoCsvReader.Read(_filePath, true)
+                _userInstallationRequirements = MapToDomain(
+                    filterAhead ? LicenceInfoCsvReader.Read(_filePath, true, applicationId) : LicenceInfoCsvReader.Read(_filePath, true)
                     .Where(l => l.ApplciationId == applicationId.ToString())).ToList();
             return _userInstallationRequirements;
         }
