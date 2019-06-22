@@ -13,7 +13,7 @@ namespace LicenceCalculator.Tests
         {
             var installations = new [] { new Installation(new Computer(1, ComputerType.Desktop), new Application(314)) };
             var requirements = new[] { new UserInstallationRequirement(1, installations) };
-            var actual = LicenceCalculationService.CalculateRequiredNumberOfLicences(requirements);
+            var actual = new LicenceCalculationService().CalculateRequiredNumberOfLicences(requirements);
             Assert.AreEqual(1, actual);
         }
 
@@ -25,7 +25,7 @@ namespace LicenceCalculator.Tests
                 new Installation(new Computer(2, ComputerType.Laptop), new Application(314))
             };
             var requirements = new[] { new UserInstallationRequirement(1, installations) };
-            var actual = LicenceCalculationService.CalculateRequiredNumberOfLicences(requirements);
+            var actual = new LicenceCalculationService().CalculateRequiredNumberOfLicences(requirements);
             Assert.AreEqual(1, actual);
         }
 
@@ -37,7 +37,7 @@ namespace LicenceCalculator.Tests
                 new Installation(new Computer(2, ComputerType.Desktop), new Application(314))
             };
             var requirements = new[] { new UserInstallationRequirement(1, installations) };
-            var actual = LicenceCalculationService.CalculateRequiredNumberOfLicences(requirements);
+            var actual = new LicenceCalculationService().CalculateRequiredNumberOfLicences(requirements);
             Assert.AreEqual(2, actual);
         }
 
@@ -52,7 +52,7 @@ namespace LicenceCalculator.Tests
                 new Installation(new Computer(5, ComputerType.Laptop), new Application(314))
             };
             var requirements = new[] { new UserInstallationRequirement(1, installations) };
-            var actual = LicenceCalculationService.CalculateRequiredNumberOfLicences(requirements);
+            var actual = new LicenceCalculationService().CalculateRequiredNumberOfLicences(requirements);
             Assert.AreEqual(3, actual);
         }
 
@@ -70,7 +70,7 @@ namespace LicenceCalculator.Tests
                 { new UserInstallationRequirement(1, installations),
                   new UserInstallationRequirement(2, installations)
             };
-            var actual = LicenceCalculationService.CalculateRequiredNumberOfLicences(requirements);
+            var actual = new LicenceCalculationService().CalculateRequiredNumberOfLicences(requirements);
             Assert.AreEqual(6, actual);
         }
     }

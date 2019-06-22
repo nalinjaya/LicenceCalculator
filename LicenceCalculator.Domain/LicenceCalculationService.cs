@@ -6,12 +6,16 @@ using System.Threading.Tasks;
 
 namespace LicenceCalculator.Domain
 {
-    public class LicenceCalculationService
+    public  interface ILicenceCalculationService
     {
-        private static int GetCountPerComputerType(UserInstallationRequirement installationRequirement, ComputerType type) =>
+        int CalculateRequiredNumberOfLicences(IEnumerable<UserInstallationRequirement> userInstallationRequirements);
+    }
+    public class LicenceCalculationService : ILicenceCalculationService
+    {
+        private int GetCountPerComputerType(UserInstallationRequirement installationRequirement, ComputerType type) =>
             installationRequirement.Installations.Where(i => i.Computer.ComputerType == type).Count();
 
-        private static int CalculateRequiredNumberOfLicences(UserInstallationRequirement userInstallationRequirements)
+        private int CalculateRequiredNumberOfLicences(UserInstallationRequirement userInstallationRequirements)
         {
             decimal desktopLicencesRequired = GetCountPerComputerType(userInstallationRequirements, ComputerType.Desktop);
             decimal laptopLicencesRequired = GetCountPerComputerType(userInstallationRequirements, ComputerType.Laptop);
@@ -22,7 +26,7 @@ namespace LicenceCalculator.Domain
 
             return (int)desktopLicencesRequired + additionalLicencesRequired;
         }
-        public static int CalculateRequiredNumberOfLicences(IEnumerable<UserInstallationRequirement> userInstallationRequirements) =>
+        public int CalculateRequiredNumberOfLicences(IEnumerable<UserInstallationRequirement> userInstallationRequirements) =>
              userInstallationRequirements.Select(CalculateRequiredNumberOfLicences).Sum();
     }
 }

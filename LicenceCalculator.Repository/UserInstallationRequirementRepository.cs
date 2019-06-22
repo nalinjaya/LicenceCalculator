@@ -7,16 +7,19 @@ using System.Threading.Tasks;
 
 namespace LicenceCalculator.Repository
 {
-    public class UserInstallationRequirementRepository
+    public interface IUserInstallationRequirementRepository
+    {
+        IEnumerable<UserInstallationRequirement> GetByApplicationId(string filePath, int applicationId);
+    }
+
+    public class UserInstallationRequirementRepository : IUserInstallationRequirementRepository
     {
         private IList<UserInstallationRequirement> _userInstallationRequirements;
-        private readonly string _filePath;
-        public UserInstallationRequirementRepository(string filePath)
-        {
-            _filePath = filePath;
-        }
-        public IEnumerable<UserInstallationRequirement> GetByApplicationId(int applicationId) =>
-            GetUserInstallationRequirements(applicationId, true);
+
+        public UserInstallationRequirementRepository() { }
+        
+        public IEnumerable<UserInstallationRequirement> GetByApplicationId(string filePath, int applicationId) =>
+            GetUserInstallationRequirements(filePath, applicationId);
 
         private ComputerType ParseComputerType(string computerType)
         {
@@ -28,11 +31,11 @@ namespace LicenceCalculator.Repository
             return ComputerType.None;
         }
 
-        private IEnumerable<UserInstallationRequirement> GetUserInstallationRequirements(int applicationId, bool filterAhead)
+        private IEnumerable<UserInstallationRequirement> GetUserInstallationRequirements(string filePath, int applicationId)
         {
             if (_userInstallationRequirements == null)
-                _userInstallationRequirements = MapToDomain(
-                    filterAhead ? LicenceInfoCsvReader.Read(_filePath, true, applicationId) : LicenceInfoCsvReader.Read(_filePath, true)
+                _userInstallationRequirements = 
+                    MapToDomain(LicenceInfoCsvReader.Read(filePath, true)
                     .Where(l => l.ApplciationId == applicationId.ToString())).ToList();
             return _userInstallationRequirements;
         }
@@ -47,7 +50,7 @@ namespace LicenceCalculator.Repository
                licenceInfoRows
                     .Distinct()
                     .Select(Validate)
-                    .Where(l => l != null);
+                    .Where(l => l != null).ToList();
         private IEnumerable<UserInstallationRequirement> MapToDomain(IEnumerable<LicenceInfoRow> licenceInfos)
         {
             var validLicenceInfos = GetValidLicenceInfo(licenceInfos);
