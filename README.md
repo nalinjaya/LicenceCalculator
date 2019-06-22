@@ -1,4 +1,8 @@
-# LicenceCalculator
+# LicenceCalculator 
+
+[![Build Status](https://travis-ci.org/nalinjaya/LicenceCalculator.svg?branch=master)](https://travis-ci.org/nalinjaya/LicenceCalculator)
+
+
 A simple program to demonstrate some basic OO principals using a hypothetical problem of calculating licences requirements for an application based on the data provided in CSV format.
 
 ### Tools & Libraries
